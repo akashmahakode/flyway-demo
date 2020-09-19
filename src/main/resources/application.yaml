@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: flyway-demo
+#  security:
+#    user:
+#      name: user
+#      password: secret
+#      roles:
+#        - EMPLOYEE
+  flyway:
+    baseline-on-migrate: true
+    baseline-version: 0
+    validate-on-migrate: true
+    url: jdbc:postgresql://localhost:5432/employees_db
+    user: employees_owner
+    password: secret
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/employees_db
+    username: employees_app
+    password: secret
+  jackson:
+    property-naming-strategy: SNAKE_CASE
