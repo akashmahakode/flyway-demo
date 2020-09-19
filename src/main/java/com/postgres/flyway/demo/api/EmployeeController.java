@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+
 /**
  * Controller class to accept requests to create and store employees
  * and retrieves an employee
@@ -35,7 +38,7 @@ public class EmployeeController {
      * @return employee details if found else htpp status 404
      */
     @GetMapping(value = {"/{id}", "/{id}/"})
-    public ResponseEntity<Employee> loadEmployee(@PathVariable("id") String id){
+    public ResponseEntity<Employee> loadEmployee(@NotBlank @PathVariable("id") String id){
         Employee employee = employeeService.getEmployee(id);
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
@@ -46,7 +49,7 @@ public class EmployeeController {
      * @return saved employee.
      */
     @PostMapping(value = {"", "/"})
-    public ResponseEntity<Employee> saveEmployee(@RequestBody CreateEmployeeRequest inputData){
+    public ResponseEntity<Employee> saveEmployee(@Valid @RequestBody CreateEmployeeRequest inputData){
         Employee employee = employeeService.saveEmployee(inputData);
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }

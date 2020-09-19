@@ -6,15 +6,15 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class CreateEmployeeRequest {
 
-    @NotBlank
+    @NotBlank(message = "Id is missing.")
     private String id;
 
-    @NotBlank
+    @NotBlank(message = "Name is missing.")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Email is missing.")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Phone is missing")
     private String phone;
 }
