@@ -54,6 +54,16 @@ public class EmployeeController {
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
+    /**
+     * Loads employee from data store specified by employee id
+     * @return employee details if found else htpp status 404
+     */
+    @GetMapping(value = {"/count", "/count/"})
+    public ResponseEntity<Void> getEmployeeCount(){
+        employeeService.getEmployeeCount();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @ExceptionHandler(value = HttpClientErrorException.class)
     public ResponseEntity<Problem> handleException(HttpClientErrorException exception){
         log.error("Returning HTTP_STATUS : {}, {}", exception.getStatusCode(), exception.getLocalizedMessage());

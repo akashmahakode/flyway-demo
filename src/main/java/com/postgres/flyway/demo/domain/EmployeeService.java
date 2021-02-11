@@ -1,5 +1,7 @@
 package com.postgres.flyway.demo.domain;
 
+import com.postgres.flyway.demo.metrics.EmployeeCounterMetrics;
+import com.postgres.flyway.demo.metrics.EmployeeGaugeMetrics;
 import com.postgres.flyway.demo.persistence.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -12,8 +14,11 @@ public class EmployeeService {
 
     private final EmployeeRepository repository;
 
-    public EmployeeService(EmployeeRepository hierarchyRepository){
+    private final EmployeeCounterMetrics counterMetrics;
+
+    public EmployeeService(EmployeeRepository hierarchyRepository, EmployeeCounterMetrics metrics){
         this.repository = hierarchyRepository;
+        this.counterMetrics = metrics;
     }
 
     /**
@@ -24,6 +29,9 @@ public class EmployeeService {
     public Employee saveEmployee(CreateEmployeeRequest employeeRequest) {
 
         Employee employee = createEmployee(employeeRequest);
+
+        // Incrementing the counter whenever employee is created
+        counterMetrics.incrementCounter();
 
         return repository.save(employee);
     }
@@ -45,5 +53,9 @@ public class EmployeeService {
         employee.setEmployeeEmail(employeeRequest.getEmail());
         employee.setEmployeePhone(employeeRequest.getPhone());
         return employee;
+    }
+
+    public void getEmployeeCount() {
+        EmployeeGaugeMetrics.EMPLOYEE_COUNT.set((int)repository.count());
     }
 }
